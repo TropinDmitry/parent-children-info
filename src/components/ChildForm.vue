@@ -1,107 +1,80 @@
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 import { Child } from '@/store/types';
 
-export default defineComponent({
-  name: 'ChildForm',
-  setup() {
-    const store = useStore();
-    const router = useRouter();
-    
-    const children = computed(() => store.state.children);
-    const canAddMoreChildren = computed(() => store.getters.canAddMoreChildren);
-    
-    const isFormValid = computed(() => {
-      return store.state.fullName.trim() !== '' && 
-             store.state.age > 0 &&
-             children.value.every(child => child.name.trim() !== '' && child.age > 0);
-    });
+const store = useStore();
 
-    const addChild = () => {
-      store.dispatch('addNewChild', {
-        name: '',
-        age: 0
-      });
-    };
+const children = computed(() => store.state.children);
+const canAddMoreChildren = computed(() => store.getters.canAddMoreChildren);
 
-    const removeChild = (id: number) => {
-      store.dispatch('deleteChild', id);
-    };
+const addChild = () => {
+  store.dispatch('addNewChild', {
+    name: '',
+    age: 0
+  });
+};
 
-    const updateChild = (child: Child) => {
-      store.dispatch('updateChild', child);
-    };
+const removeChild = (id: number) => {
+  store.dispatch('deleteChild', id);
+};
 
-    const saveData = () => {
-      if (isFormValid.value) {
-        router.push('/preview');
-      }
-    };
-
-    return {
-      children,
-      canAddMoreChildren,
-      isFormValid,
-      addChild,
-      removeChild,
-      updateChild,
-      saveData
-    };
-  }
-});
+const updateChild = (child: Child) => {
+  store.dispatch('updateChild', child);
+};
 </script>
 
 <template>
   <div class="child-form">
     <div class="child-header">
       <h2>Дети (макс. 5)</h2>
-      <button 
-        v-if="canAddMoreChildren" 
-        @click="addChild" 
+      <button
+        v-if="canAddMoreChildren"
+        @click="addChild"
         class="add-button"
       >
         Добавить ребенка
       </button>
     </div>
-    
-    <div v-for="child in children" :key="child.id" class="child-item">
+
+    <div
+      v-for="child in children"
+      :key="child.id"
+      class="child-item"
+    >
       <div class="form-col">
         <label>Имя</label>
-        <input 
-          type="text" 
-          v-model="child.name" 
+        <input
+          type="text"
+          v-model="child.name"
           @input="updateChild(child)"
           placeholder="Имя ребенка"
         />
       </div>
       <div class="form-col">
         <label>Возраст</label>
-        <input 
-          type="number" 
-          v-model.number="child.age" 
+        <input
+          type="number"
+          v-model.number="child.age"
           @input="updateChild(child)"
           min="0"
           placeholder="Возраст ребенка"
         />
       </div>
-      <button @click="removeChild(child.id)" class="remove-button">
+      <button
+        @click="removeChild(child.id)"
+        class="remove-button"
+      >
         Удалить
       </button>
     </div>
-    
-    <button 
-      @click="saveData" 
-      class="save-button"
-      :disabled="!isFormValid"
-    >
-      Сохранить
-    </button>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style
+  scoped
+  lang="scss"
+>
 .child-form {
   margin-bottom: 30px;
 }
@@ -175,32 +148,13 @@ label {
   color: #1111117A;
 }
 
-input, input:focus-visible {
+input,
+input:focus-visible {
   width: 100%;
   padding: 4px 12px;
   font-size: 16px;
   box-sizing: border-box;
   border: none;
   outline: none;
-}
-
-.save-button {
-  padding: 12px 20px;
-  background-color: #01A7FD;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.save-button:hover {
-  background-color: #1a2b3c;
-}
-
-.save-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
 }
 </style>

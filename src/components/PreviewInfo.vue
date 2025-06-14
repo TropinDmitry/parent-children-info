@@ -1,23 +1,13 @@
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'PreviewInfo',
-  setup() {
-    const store = useStore();
+const store = useStore();
 
-    const fullName = computed(() => store.state.fullName);
-    const age = computed(() => store.state.age);
-    const children = computed(() => store.state.children);
+const fullName = computed(() => store.state.fullName);
+const age = computed(() => store.state.age);
+const children = computed(() => store.state.children);
 
-    return {
-      fullName,
-      age,
-      children
-    };
-  }
-});
 </script>
 
 <template>

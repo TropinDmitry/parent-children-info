@@ -4,8 +4,8 @@ import { v4 } from 'uuid';
 
 export default createStore<ParentState>({
   state: {
-    fullName: '',
-    age: 0,
+    fullName: '' as string,
+    age: 0 as number,
     children: [] as Child[]
   },
   mutations: {

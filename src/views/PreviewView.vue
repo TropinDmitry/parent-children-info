@@ -1,15 +1,6 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import MyHeader from '@/components/app/AppHeader.vue';
+<script lang="ts" setup>
 import PreviewInfo from '@/components/PreviewInfo.vue';
-import MyFooter from '@/components/app/AppFooter.vue';
 
-export default defineComponent({
-  name: 'PreviewView',
-  components: {
-    PreviewInfo
-  }
-});
 </script>
 
 <template>

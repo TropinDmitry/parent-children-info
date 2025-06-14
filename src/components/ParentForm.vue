@@ -1,36 +1,25 @@
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+<script lang="ts" setup>
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'ParentForm',
-  setup() {
-    const store = useStore();
-    
-    const fullName = ref(store.state.fullName);
-    const age = ref(store.state.age);
+const store = useStore();
 
-    const updateParentInfo = () => {
-      store.dispatch('saveParentInfo', {
-        fullName: fullName.value,
-        age: age.value
-      });
-    };
+const fullName = ref(store.state.fullName);
+const age = ref(store.state.age);
 
-    watch(() => store.state.fullName, (newVal) => {
-      fullName.value = newVal;
-    });
-    
-    watch(() => store.state.age, (newVal) => {
-      age.value = newVal;
-    });
+const updateParentInfo = () => {
+  store.dispatch('saveParentInfo', {
+    fullName: fullName.value,
+    age: age.value
+  });
+};
 
-    return {
-      fullName,
-      age,
-      updateParentInfo
-    };
-  }
+watch(() => store.state.fullName, (newVal) => {
+  fullName.value = newVal;
+});
+
+watch(() => store.state.age, (newVal) => {
+  age.value = newVal;
 });
 </script>
 
@@ -39,18 +28,18 @@ export default defineComponent({
     <h2>Персональные данные</h2>
     <div class="form-group">
       <label>Имя</label>
-      <input 
-        type="text" 
-        v-model="fullName" 
+      <input
+        type="text"
+        v-model="fullName"
         @input="updateParentInfo"
         placeholder="Введите ваше имя"
       />
     </div>
     <div class="form-group">
       <label>Возраст</label>
-      <input 
-        type="number" 
-        v-model.number="age" 
+      <input
+        type="number"
+        v-model.number="age"
         @input="updateParentInfo"
         min="0"
         placeholder="Введите ваш возраст"
@@ -59,7 +48,10 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped lang="scss">
+<style
+  scoped
+  lang="scss"
+>
 .parent-form {
   margin-bottom: 30px;
 }
@@ -88,7 +80,8 @@ label {
   color: #1111117A;
 }
 
-input, input:focus-visible {
+input,
+input:focus-visible {
   width: 100%;
   padding: 4px 12px;
   border-radius: 4px;
